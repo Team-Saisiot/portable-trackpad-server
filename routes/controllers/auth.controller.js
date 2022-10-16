@@ -3,14 +3,16 @@ const User = require("../../models/User");
 
 exports.googleAuth = async (req, res, next) => {
   const client = new OAuth2Client(process.env.EXPO_CLIENT_ID);
-  const { id_token } = req.body;
+  const { idToken } = req.body;
   let decoded;
 
   try {
     decoded = await client.verifyIdToken({
-      idToken: id_token,
+      idToken: idToken,
       audience: process.env.EXPO_CLIENT_ID,
     });
+
+    console.log(decoded);
   } catch (error) {
     return res.status(500).json({
       message: "internal server error",
@@ -27,6 +29,8 @@ exports.googleAuth = async (req, res, next) => {
     const { name, email } = decoded.payload;
 
     let user = await User.findOne({ email });
+
+    console.log("user", user);
 
     if (!user) {
       user = await User.create({ name, email });
