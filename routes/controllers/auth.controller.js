@@ -25,6 +25,7 @@ exports.googleAuth = async (req, res, next) => {
 
   try {
     const { name, email } = decoded.payload;
+
     let user = await User.findOne({ email });
 
     if (!user) {
