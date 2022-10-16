@@ -8,10 +8,6 @@ const db = require("./config/db");
 
 const authRouter = require("./routes/auth");
 const app = express();
-const corsOptions = {
-  origin: [`${process.env.CLIENT_PORT}`],
-  credentials: true,
-};
 
 db();
 
