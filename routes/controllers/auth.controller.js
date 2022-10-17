@@ -23,7 +23,7 @@ exports.googleAuth = async (req, res, next) => {
       message: "unauthorized",
     });
   }
-  console.log(decoded);
+
   try {
     const { name, email } = decoded.payload;
 
