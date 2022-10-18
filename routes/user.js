@@ -1,12 +1,9 @@
 const express = require("express");
-const User = require("../models/User");
+const { getRecentPc, getGesture } = require("./controllers/user.controller");
 const router = express.Router();
 
-router.get("/:users_id/gestures", async (req, res, next) => {
-  const userId = req.params.users_id;
-  const user = await User.findOne({ email: userId });
+router.get("/:users_id/gestures", getGesture);
 
-  res.send({ gesture: user.gesture });
-});
+router.get("/:users_id/pc", getRecentPc);
 
 module.exports = router;
