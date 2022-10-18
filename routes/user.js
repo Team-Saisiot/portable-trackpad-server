@@ -1,9 +1,11 @@
 const express = require("express");
-const { getRecentPc, getGesture } = require("./controllers/user.controller");
+const {
+  getRecentPc,
+  getGesture,
+  updateRecentPc,
+} = require("./controllers/user.controller");
 const router = express.Router();
 
-router.get("/:users_id/gestures", getGesture);
-
-router.get("/:users_id/pc", getRecentPc);
+router.route("/:users_id/gestures").get(getGesture).post(updateRecentPc);
 
 module.exports = router;
