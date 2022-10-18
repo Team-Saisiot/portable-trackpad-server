@@ -9,4 +9,12 @@ router.get("/:users_id/gestures", async (req, res, next) => {
   res.send({ gesture: user.gesture });
 });
 
+router.get("/:users_id/pc", async (req, res, next) => {
+  const email = req.params.users_id;
+
+  const user = await User.findOne({ email });
+
+  res.send({ recentPc: user.pc });
+});
+
 module.exports = router;

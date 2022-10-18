@@ -46,11 +46,12 @@ exports.googleAuth = async (req, res, next) => {
         function: "two_finger_right_Slide",
       },
     ];
+    const pc = {};
 
     let user = await User.findOne({ email });
 
     if (!user) {
-      user = await User.create({ name, email, gesture });
+      user = await User.create({ name, email, gesture, pc });
     }
 
     return res.json({ user });
