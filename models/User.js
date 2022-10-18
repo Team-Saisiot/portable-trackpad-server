@@ -1,6 +1,24 @@
 const mongoose = require("mongoose");
 
-const UserSchema = new mongoose.Schema({
+const gestureSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  count: {
+    type: Number,
+    required: true,
+  },
+  custom: {
+    type: Boolean,
+  },
+  function: {
+    type: String,
+    required: true,
+  },
+});
+
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -9,6 +27,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  gesture: [gestureSchema],
 });
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model("User", userSchema);
