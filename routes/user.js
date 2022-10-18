@@ -6,6 +6,8 @@ const {
 } = require("./controllers/user.controller");
 const router = express.Router();
 
-router.route("/:users_id/gestures").get(getGesture).post(updateRecentPc);
+router.get("/:users_id/gestures", getGesture);
+
+router.route("/:users_id/pc").get(getRecentPc).post(updateRecentPc);
 
 module.exports = router;
