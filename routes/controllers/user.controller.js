@@ -2,36 +2,36 @@ const User = require("../../models/User");
 const nodemailer = require("nodemailer");
 
 exports.getGesture = async (req, res, next) => {
-  const userId = req.params.users_id;
-  const user = await User.findOne({ email: userId });
+  const email = req.params.users_id;
+  const user = await User.findOne({ email });
 
   res.json({ gesture: user.gesture });
 };
 
 exports.getRecentPc = async (req, res, next) => {
   const email = req.params.users_id;
-
   const user = await User.findOne({ email });
 
   res.json({ recentPc: user.pc });
 };
 
 exports.updateRecentPc = async (req, res, next) => {
-  const userId = req.params.users_id;
+  const email = req.params.users_id;
   const recentPc = req.body.recentPc;
+  const lastAccessDate = new Date();
 
-  const user = await User.findOne({ email: userId });
+  const user = await User.findOne({ email });
 
   await User.updateOne(
-    { email: userId },
+    { email },
     {
       name: user.name,
       email: user.email,
       gesture: user.gesture,
       pc: {
         name: recentPc.name,
-        ipAddress: recentPc.ip,
-        lastAccessData: new Date(),
+        ipAddress: recentPc.ipAddress,
+        lastAccessDate,
       },
     },
   );
@@ -68,6 +68,7 @@ exports.postEmail = async (req, res, next) => {
     res.json({ result: "success" });
   } catch (error) {
     console.error(error);
+
     return res.status(500).json({
       message: "Send email failed, Please try again.",
     });
