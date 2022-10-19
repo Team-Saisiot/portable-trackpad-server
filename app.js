@@ -8,6 +8,7 @@ const db = require("./config/db");
 
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
+const localIpRouter = require("./routes/localIp");
 const app = express();
 
 db();
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", authRouter);
 app.use("/users", userRouter);
+app.use("/localIps", localIpRouter);
 
 app.use((req, res, next) => {
   next(createError(404));

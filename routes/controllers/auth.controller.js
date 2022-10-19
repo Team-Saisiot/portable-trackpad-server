@@ -9,7 +9,7 @@ exports.googleAuth = async (req, res, next) => {
 
   try {
     decoded = await client.verifyIdToken({
-      idToken: idToken,
+      idToken,
       audience: process.env.EXPO_CLIENT_ID,
     });
   } catch (error) {
