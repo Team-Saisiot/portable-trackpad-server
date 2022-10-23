@@ -1,5 +1,7 @@
 const { OAuth2Client } = require("google-auth-library");
 const User = require("../../models/User");
+const createError = require("http-errors");
+const ERROR = require("../../constants/error");
 
 exports.googleAuth = async (req, res, next) => {
   const client = new OAuth2Client(process.env.EXPO_CLIENT_ID);
@@ -13,15 +15,11 @@ exports.googleAuth = async (req, res, next) => {
       audience: process.env.EXPO_CLIENT_ID,
     });
   } catch (error) {
-    return res.status(500).json({
-      message: "internal server error",
-    });
+    next(error);
   }
 
   if (!decoded) {
-    return res.status(401).json({
-      message: "unauthorized",
-    });
+    return next(createError(401, ERROR.INVALID_TOKEN));
   }
 
   try {
@@ -56,8 +54,6 @@ exports.googleAuth = async (req, res, next) => {
 
     return res.json({ user, idToken: req.body.idToken });
   } catch (error) {
-    return res.status(500).json({
-      message: "Login failed. Please try again",
-    });
+    return next(error);
   }
 };
