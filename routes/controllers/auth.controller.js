@@ -19,7 +19,7 @@ exports.googleAuth = async (req, res, next) => {
   }
 
   if (!decoded) {
-    return next(createError(401, ERROR.INVALID_TOKEN));
+    next(createError(401, ERROR.INVALID_TOKEN));
   }
 
   try {
@@ -52,8 +52,8 @@ exports.googleAuth = async (req, res, next) => {
       user = await User.create({ name, email, gesture, pc });
     }
 
-    return res.json({ user, idToken: req.body.idToken });
+    res.json({ user, idToken: req.body.idToken });
   } catch (error) {
-    return next(error);
+    next(error);
   }
 };

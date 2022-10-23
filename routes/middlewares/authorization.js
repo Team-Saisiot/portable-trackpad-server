@@ -14,8 +14,8 @@ exports.verifyToken = async (req, res, next) => {
       next(createError(401, ERROR.INVALID_TOKEN));
     }
 
-    return next();
+    next();
   } catch (error) {
-    return next(error);
+    next(error);
   }
 };

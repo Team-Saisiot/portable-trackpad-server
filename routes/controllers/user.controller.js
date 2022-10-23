@@ -7,9 +7,9 @@ exports.getGesture = async (req, res, next) => {
   try {
     const user = await User.findOne({ email });
 
-    return res.json({ gesture: user.gesture });
+    res.json({ gesture: user.gesture });
   } catch (error) {
-    return next(error);
+    next(error);
   }
 };
 
@@ -19,9 +19,9 @@ exports.getRecentPc = async (req, res, next) => {
   try {
     const user = await User.findOne({ email });
 
-    return res.json({ recentPc: user.pc });
+    res.json({ recentPc: user.pc });
   } catch (error) {
-    return next(error);
+    next(error);
   }
 };
 
@@ -47,7 +47,7 @@ exports.updateRecentPc = async (req, res, next) => {
       },
     );
   } catch (error) {
-    return next(error);
+    next(error);
   }
 };
 
@@ -79,8 +79,8 @@ exports.postEmail = async (req, res, next) => {
 
     await transporter.sendMail(mailOption);
 
-    return res.json({ result: "success" });
+    res.json({ result: "success" });
   } catch (error) {
-    return next(error);
+    next(error);
   }
 };
