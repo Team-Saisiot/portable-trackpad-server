@@ -11,15 +11,11 @@ exports.verifyToken = async (req, res, next) => {
     });
 
     if (!decoded) {
-      res.status(401).json({
-        message: "unauthorized",
-      });
+      next(createError(401, ERROR.INVALID_TOKEN));
     }
 
-    return next();
+    next();
   } catch (error) {
-    return res.status(500).json({
-      message: "internal server error",
-    });
+    next(error);
   }
 };

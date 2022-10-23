@@ -3,16 +3,26 @@ const nodemailer = require("nodemailer");
 
 exports.getGesture = async (req, res, next) => {
   const email = req.params.users_id;
-  const user = await User.findOne({ email });
 
-  res.json({ gesture: user.gesture });
+  try {
+    const user = await User.findOne({ email });
+
+    res.json({ gesture: user.gesture });
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.getRecentPc = async (req, res, next) => {
   const email = req.params.users_id;
-  const user = await User.findOne({ email });
 
-  res.json({ recentPc: user.pc });
+  try {
+    const user = await User.findOne({ email });
+
+    res.json({ recentPc: user.pc });
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.updateRecentPc = async (req, res, next) => {
@@ -20,21 +30,25 @@ exports.updateRecentPc = async (req, res, next) => {
   const recentPc = req.body.recentPc;
   const lastAccessDate = new Date();
 
-  const user = await User.findOne({ email });
+  try {
+    const user = await User.findOne({ email });
 
-  await User.updateOne(
-    { email },
-    {
-      name: user.name,
-      email: user.email,
-      gesture: user.gesture,
-      pc: {
-        name: recentPc.name,
-        ipAddress: recentPc.ipAddress,
-        lastAccessDate,
+    return await User.updateOne(
+      { email },
+      {
+        name: user.name,
+        email: user.email,
+        gesture: user.gesture,
+        pc: {
+          name: recentPc.name,
+          ipAddress: recentPc.ipAddress,
+          lastAccessDate,
+        },
       },
-    },
-  );
+    );
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.postEmail = async (req, res, next) => {
@@ -67,10 +81,6 @@ exports.postEmail = async (req, res, next) => {
 
     res.json({ result: "success" });
   } catch (error) {
-    console.error(error);
-
-    return res.status(500).json({
-      message: "Send email failed, Please try again.",
-    });
+    next(error);
   }
 };
