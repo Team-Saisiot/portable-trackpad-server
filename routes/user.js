@@ -15,6 +15,7 @@ router
   .route("/:users_id/gestures")
   .get(verifyToken, getGesture)
   .post(verifyToken, updateGestures);
+
 router
   .route("/:users_id/customGesture")
   .get(verifyToken, getCustomGesture)
@@ -26,4 +27,5 @@ router
   .post(verifyToken, updateRecentPc);
 
 router.post("/email", verifyToken, postEmail);
+
 module.exports = router;

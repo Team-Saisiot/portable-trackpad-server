@@ -90,7 +90,6 @@ exports.updateGestures = async (req, res, next) => {
     const email = req.params.users_id;
 
     const gesture = req.body.updatedGesture;
-    console.log("exports.updateGestures= ~ gesture", gesture);
 
     await User.updateOne({ email }, { $set: { gesture } });
 
