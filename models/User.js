@@ -1,19 +1,32 @@
 const mongoose = require("mongoose");
+const DEFAULT_GESTURE = require("../constants/defaultGesture");
 
 const gestureSchema = new mongoose.Schema({
-  name: {
+  action: {
     type: String,
     required: true,
-  },
-  count: {
-    type: Number,
-    required: true,
-  },
-  custom: {
-    type: Boolean,
   },
   function: {
     type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  pointer: {
+    type: Number,
+    required: true,
+  },
+  direction: {
+    type: String,
+    required: true,
+  },
+  position: {
+    type: String,
+  },
+  count: {
+    type: Number,
     required: true,
   },
 });
@@ -33,8 +46,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  gesture: [gestureSchema],
-  pc: pcSchema,
+  gesture: {
+    type: [gestureSchema],
+    default: DEFAULT_GESTURE,
+  },
+  customGesture: {
+    path: { type: Array },
+    function: { type: String },
+  },
+  pc: { type: pcSchema, default: {}, required: true },
 });
 
 module.exports = mongoose.model("User", userSchema);
