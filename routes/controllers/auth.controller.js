@@ -24,32 +24,11 @@ exports.googleAuth = async (req, res, next) => {
 
   try {
     const { name, email } = decoded.payload;
-    const gesture = [
-      {
-        name: "two_finger_updown_Slide",
-        count: 0,
-        custom: false,
-        function: "two_finger_updown_Slide",
-      },
-      {
-        name: "two_finger_left_Slide",
-        count: 0,
-        custom: false,
-        function: "two_finger_left_Slide",
-      },
-      {
-        name: "two_finger_right_Slide",
-        count: 0,
-        custom: false,
-        function: "two_finger_right_Slide",
-      },
-    ];
-    const pc = {};
 
     let user = await User.findOne({ email });
 
     if (!user) {
-      user = await User.create({ name, email, gesture, pc });
+      user = await User.create({ name, email });
     }
 
     res.json({ user, idToken: req.body.idToken });

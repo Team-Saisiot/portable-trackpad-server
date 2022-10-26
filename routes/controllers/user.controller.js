@@ -84,3 +84,58 @@ exports.postEmail = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.updateGestures = async (req, res, next) => {
+  try {
+    const email = req.params.users_id;
+
+    const gesture = req.body.updatedGesture;
+    console.log("exports.updateGestures= ~ gesture", gesture);
+
+    await User.updateOne({ email }, { $set: { gesture } });
+
+    res.json({ result: "success" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.updateCustomGesture = async (req, res, next) => {
+  try {
+    const email = req.params.users_id;
+
+    const user = await User.findOne({ email });
+
+    const customGesture = {
+      path: req.body?.path ? req.body?.path : user.customGesture.path,
+      function: req.body?.function
+        ? req.body?.function
+        : user.customGesture.function,
+    };
+
+    await User.updateOne(
+      { email },
+      {
+        $set: {
+          customGesture,
+        },
+      },
+    );
+
+    res.json({ result: "success" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getCustomGesture = async (req, res, next) => {
+  const email = req.params.users_id;
+
+  try {
+    const user = await User.findOne({ email });
+
+    res.json({ customGesture: user.customGesture });
+  } catch (error) {
+    next(error);
+  }
+};
