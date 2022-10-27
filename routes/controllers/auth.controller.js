@@ -5,13 +5,13 @@ const ERROR = require("../../constants/error");
 
 exports.googleAuth = async (req, res, next) => {
   const client = new OAuth2Client(process.env.EXPO_CLIENT_ID);
-  const { idToken } = req.body;
+  const { idtoken } = req.headers;
 
   let decoded;
 
   try {
     decoded = await client.verifyIdToken({
-      idToken,
+      idToken: idtoken,
       audience: process.env.EXPO_CLIENT_ID,
     });
   } catch (error) {
@@ -28,10 +28,10 @@ exports.googleAuth = async (req, res, next) => {
     let user = await User.findOne({ email });
 
     if (!user) {
-      user = await User.create({ name, email });
+      user = await User.create({ name, email, pc });
     }
 
-    res.json({ user, idToken: req.body.idToken });
+    res.json({ user, idToken: idtoken });
   } catch (error) {
     next(error);
   }
