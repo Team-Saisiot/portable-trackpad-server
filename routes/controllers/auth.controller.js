@@ -28,7 +28,7 @@ exports.googleAuth = async (req, res, next) => {
     let user = await User.findOne({ email });
 
     if (!user) {
-      user = await User.create({ name, email, pc });
+      user = await User.create({ name, email });
     }
 
     res.json({ user, idToken: idtoken });
