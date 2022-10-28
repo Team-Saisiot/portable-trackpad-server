@@ -39,6 +39,7 @@ exports.updateRecentPc = async (req, res, next) => {
         name: user.name,
         email: user.email,
         gesture: user.gesture,
+        customGesture: user.customGesture,
         pc: {
           name: recentPc.name,
           ipAddress: recentPc.ipAddress,
@@ -66,8 +67,8 @@ exports.postEmail = async (req, res, next) => {
     const htmlContent = `
       <h1>Hello User!</h1>
       <p>
-        <h2>아래의 링크를 통해 다운로드 받을 수 있습니다. (차후 다운로드 링크로 변경할 예정)</h2>
-        <h3>https://github.com/Team-Saisiot/portable-trackpad-package<h3>
+        <h2>아래의 링크를 통해 Package파일을 다운로드 받을 수 있습니다.</h2>
+        <a href="https://drive.google.com/file/d/1T7-AoPHIjv_yW8r1dTUA-gSS13OnfqbQ/view?usp=sharing">Package파일 다운로드<a>
       </p>
     `;
     const mailOption = {
@@ -89,9 +90,9 @@ exports.updateGestures = async (req, res, next) => {
   try {
     const email = req.params.users_id;
 
-    const gesture = req.body.updatedGesture;
+    const { gesture } = req.body.updatedGesture;
 
-    await User.updateOne({ email }, { $set: { gesture } });
+    await User.findOneAndUpdate({ email }, { $set: { gesture } });
 
     res.json({ result: "success" });
   } catch (error) {
