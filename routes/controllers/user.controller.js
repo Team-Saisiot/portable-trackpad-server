@@ -53,31 +53,33 @@ exports.updateRecentPc = async (req, res, next) => {
 };
 
 exports.postEmail = async (req, res, next) => {
-  try {
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      auth: {
-        user: process.env.MAILS_EMAIL,
-        pass: process.env.MAILS_PWD,
-      },
-      secure: true,
-    });
-    const email = req.body.email;
-    const htmlContent = `
-      <h1>Hello User!</h1>
-      <p>
-        <h2>아래의 링크를 통해 Package파일을 다운로드 받을 수 있습니다.</h2>
-        <a href="https://drive.google.com/file/d/1T7-AoPHIjv_yW8r1dTUA-gSS13OnfqbQ/view?usp=sharing">Package파일 다운로드<a>
-      </p>
-    `;
-    const mailOption = {
-      from: process.env.MAILS_EMAIL,
-      to: email,
-      subject: "Portable Trackpad Desktop Application Download",
-      html: htmlContent,
-    };
+  const email = req.body.email;
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    auth: {
+      user: process.env.MAILS_EMAIL,
+      pass: process.env.MAILS_PWD,
+    },
+    secure: true,
+  });
 
+  const htmlContent = `
+    <h1>Hello User!</h1>
+    <p>
+      <h2>아래의 링크를 통해 Package파일을 다운로드 받을 수 있습니다.</h2>
+      <a href="https://drive.google.com/file/d/1T7-AoPHIjv_yW8r1dTUA-gSS13OnfqbQ/view?usp=sharing">Package파일 다운로드<a>
+    </p>
+  `;
+
+  const mailOption = {
+    from: process.env.MAILS_EMAIL,
+    to: email,
+    subject: "Portable TrackPad Desktop Application Download",
+    html: htmlContent,
+  };
+
+  try {
     await transporter.sendMail(mailOption);
 
     res.json({ result: "success" });
@@ -87,12 +89,11 @@ exports.postEmail = async (req, res, next) => {
 };
 
 exports.updateGestures = async (req, res, next) => {
+  const email = req.params.users_id;
+  const { gesture } = req.body.updatedGesture;
+
   try {
-    const email = req.params.users_id;
-
-    const { gesture } = req.body.updatedGesture;
-
-    await User.findOneAndUpdate({ email }, { $set: { gesture } });
+    await User.findOneAndUpdate({ email }, { gesture });
 
     res.json({ result: "success" });
   } catch (error) {
@@ -101,9 +102,9 @@ exports.updateGestures = async (req, res, next) => {
 };
 
 exports.updateCustomGesture = async (req, res, next) => {
-  try {
-    const email = req.params.users_id;
+  const email = req.params.users_id;
 
+  try {
     const user = await User.findOne({ email });
 
     const customGesture = {
@@ -113,14 +114,7 @@ exports.updateCustomGesture = async (req, res, next) => {
         : user.customGesture.function,
     };
 
-    await User.updateOne(
-      { email },
-      {
-        $set: {
-          customGesture,
-        },
-      },
-    );
+    await User.updateOne({ email }, { customGesture });
 
     res.json({ result: "success" });
   } catch (error) {
